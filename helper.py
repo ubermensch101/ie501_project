@@ -1,0 +1,72 @@
+import numpy as np
+from scipy.optimize import minimize
+from scipy.optimize import differential_evolution
+import cvxopt as opt
+from cvxopt import solvers
+
+def portfolio_return(weights, mean_returns):
+    return -np.dot(weights, mean_returns)  # Negative for maximization
+
+def portfolio_risk(weights, cov_matrix):
+    return np.sqrt(weights.T @ cov_matrix @ weights)
+
+def diversification_constraint(weights, max_weight):
+    return max_weight - np.max(weights)
+
+# Optimization using SLSQP
+def optimize_slsqp(mean_returns, cov_matrix, max_risk, max_weight):
+    constraints = [
+        {'type': 'eq', 'fun': lambda x: np.sum(x) - 1},  # Sum of weights = 1
+        {'type': 'ineq', 'fun': lambda x: max_risk - portfolio_risk(x, cov_matrix)},
+        {'type': 'ineq', 'fun': lambda x: diversification_constraint(x, max_weight)}
+    ]
+    bounds = [(0, max_weight) for _ in range(len(mean_returns))]
+    initial_weights = np.ones(len(mean_returns)) / len(mean_returns)
+
+    result = minimize(
+        portfolio_return,
+        x0=initial_weights,
+        args=(mean_returns,),
+        method='SLSQP',
+        bounds=bounds,
+        constraints=constraints
+    )
+    return result.x, -result.fun, portfolio_risk(result.x, cov_matrix)
+
+# Optimization using Quadratic Programming (QP)
+def optimize_qp(mean_returns, cov_matrix):
+    n = len(mean_returns)
+    P = opt.matrix(cov_matrix)
+    q = opt.matrix(-mean_returns)
+    G = opt.matrix(-np.eye(n))
+    h = opt.matrix(0.0, (n, 1))
+    A = opt.matrix(1.0, (1, n))
+    b = opt.matrix(1.0)
+
+    sol = solvers.qp(P, q, G, h, A, b)
+    weights = np.array(sol['x']).flatten()
+    return weights, np.dot(weights, mean_returns), portfolio_risk(weights, cov_matrix)
+
+# Optimization using Differential Evolution (DE)
+def optimize_de(mean_returns, cov_matrix, max_risk, max_weight):
+    bounds = [(0, max_weight) for _ in range(len(mean_returns))]
+    
+    def objective(weights):
+        return -np.dot(weights, mean_returns)
+
+    def constraint(weights):
+        return max_risk - portfolio_risk(weights, cov_matrix)
+
+    result = differential_evolution(
+        objective,
+        bounds=bounds,
+        constraints=({'type': 'ineq', 'fun': constraint},),
+        strategy='best1bin',
+        maxiter=1000
+    )
+    weights = result.x
+    return weights, np.dot(weights, mean_returns), portfolio_risk(weights, cov_matrix)
+
+# Function to calculate cumulative returns
+def calculate_cumulative_returns(portfolio_returns):
+    return (1 + portfolio_returns).cumprod()
