@@ -78,7 +78,7 @@ def backtest_portfolio(weights):
     print(f"Total Portfolio Value at End: ₹{portfolio_value:,.2f}")
 
 if __name__ == "__main__":
-    method = "SLSQP"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
+    method = "QP"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
     weights, optimized_return, optimized_risk = run_optimization(method=method)
 
     print("Optimal Weights:", weights)

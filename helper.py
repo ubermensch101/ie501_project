@@ -3,6 +3,7 @@ from scipy.optimize import minimize
 from scipy.optimize import differential_evolution
 import cvxopt as opt
 from cvxopt import solvers
+from scipy.optimize import NonlinearConstraint
 
 def portfolio_return(weights, mean_returns):
     return -np.dot(weights, mean_returns)  # Negative for maximization
@@ -36,7 +37,7 @@ def optimize_slsqp(mean_returns, cov_matrix, max_risk, max_weight):
 # Optimization using Quadratic Programming (QP)
 def optimize_qp(mean_returns, cov_matrix):
     n = len(mean_returns)
-    P = opt.matrix(cov_matrix)
+    P = opt.matrix(cov_matrix.values)
     q = opt.matrix(-mean_returns)
     G = opt.matrix(-np.eye(n))
     h = opt.matrix(0.0, (n, 1))
@@ -57,10 +58,16 @@ def optimize_de(mean_returns, cov_matrix, max_risk, max_weight):
     def constraint(weights):
         return max_risk - portfolio_risk(weights, cov_matrix)
 
+    nonlinear_constraint = NonlinearConstraint(
+        fun=constraint,  
+        lb=0,                 
+        ub=np.inf            
+    )
+
     result = differential_evolution(
         objective,
         bounds=bounds,
-        constraints=({'type': 'ineq', 'fun': constraint},),
+        constraints=(nonlinear_constraint,),
         strategy='best1bin',
         maxiter=1000
     )
