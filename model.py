@@ -29,7 +29,7 @@ def run_optimization(method="SLSQP"):
     if method == "SLSQP":
         return optimize_slsqp(mean_returns, cov_matrix, max_risk, max_weight)
     elif method == "QP":
-        return optimize_qp(mean_returns, cov_matrix)
+        return optimize_qp(mean_returns, cov_matrix,max_weight)
     elif method == "DE":
         return optimize_de(mean_returns, cov_matrix, max_risk, max_weight)
     else:
@@ -80,7 +80,7 @@ def backtest_portfolio(weights):
     print(f"Total Portfolio Value at End: ₹{portfolio_value:,.2f}")
 
 if __name__ == "__main__":
-    method = "DE"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
+    method = "QP"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
     weights, optimized_return, optimized_risk = run_optimization(method=method)
 
     print("Optimal Weights:", weights)

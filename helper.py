@@ -35,12 +35,12 @@ def optimize_slsqp(mean_returns, cov_matrix, max_risk, max_weight):
     return result.x, -result.fun, portfolio_risk(result.x, cov_matrix)
 
 # Optimization using Quadratic Programming (QP)
-def optimize_qp(mean_returns, cov_matrix):
+def optimize_qp(mean_returns, cov_matrix,max_weight):
     n = len(mean_returns)
     P = opt.matrix(cov_matrix.values)
     q = opt.matrix(-mean_returns)
-    G = opt.matrix(-np.eye(n))
-    h = opt.matrix(0.0, (n, 1))
+    G = opt.matrix(np.vstack([np.eye(n), -np.eye(n)]))
+    h = opt.matrix(np.hstack([np.ones(n) * max_weight, np.zeros(n)]))
     A = opt.matrix(1.0, (1, n))
     b = opt.matrix(1.0)
 
