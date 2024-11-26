@@ -8,6 +8,7 @@ from helper import (
 )
 from data import max_risk, max_weight, assets, total_capital
 import os
+from analyze import *
 
 file_path = "asset_prices.csv"
 data = pd.read_csv(file_path)
@@ -72,9 +73,12 @@ def backtest_portfolio(weights):
 
     cumulative_returns.plot(title="Cumulative Returns (Backtesting Period)", figsize=(10, 6))
 
-    start_prices = backtesting_prices.iloc[0].values
-    end_prices = backtesting_prices.iloc[-1].values
-    portfolio_value = sum([shares[asset] * end_prices[i] for i, asset in enumerate(assets)])
+    # start_prices = backtesting_prices.iloc[0].values
+    # end_prices = backtesting_prices.iloc[-1].values
+    portfolio_value = sum([shares[asset] * data[
+                        (data['Year'] == data['Year'].iloc[-1]) & 
+                        (data['Month'] == data['Month'].iloc[-1])
+                    ][asset].values[0] for i, asset in enumerate(assets)])
     print(f"Total Portfolio Value at End: ₹{portfolio_value:,.2f}")
 
 if __name__ == "__main__":
@@ -86,3 +90,4 @@ if __name__ == "__main__":
     print("Optimized Risk:", optimized_risk)
 
     backtest_portfolio(weights)
+    analyze_results()

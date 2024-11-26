@@ -2,15 +2,15 @@
 Asset: RELIANCE.NS
   Start Price: 1086.57
   End Price: 1283.73
-  Shares Held: 2300.0
-  Capital Allocated: 453,474.54
+  Shares Held: 0.0
+  Capital Allocated: 0.00
   Percentage Return: 18.15%
 
 Asset: TCS.NS
   Start Price: 3514.45
   End Price: 3730.87
-  Shares Held: 711.0
-  Capital Allocated: 153,877.69
+  Shares Held: 0.0
+  Capital Allocated: 0.00
   Percentage Return: 6.16%
 
 Asset: HDFCBANK.NS
@@ -23,8 +23,8 @@ Asset: HDFCBANK.NS
 Asset: INFY.NS
   Start Price: 1613.90
   End Price: 1504.16
-  Shares Held: 1549.0
-  Capital Allocated: -169,986.87
+  Shares Held: 0.0
+  Capital Allocated: -0.00
   Percentage Return: -6.80%
 
 Asset: ICICIBANK.NS
@@ -37,8 +37,8 @@ Asset: ICICIBANK.NS
 Asset: BAJFINANCE.NS
   Start Price: 6910.65
   End Price: 7291.15
-  Shares Held: 361.0
-  Capital Allocated: 137,359.97
+  Shares Held: 1447.0
+  Capital Allocated: 550,581.38
   Percentage Return: 5.51%
 
 Asset: HINDUNILVR.NS
@@ -70,7 +70,7 @@ Asset: SBIN.NS
   Percentage Return: 23.49%
 
 ===== Final Portfolio Statistics =====
-Initial Portfolio Value: 9,992,546.72
-Final Portfolio Value: 10,567,272.05
-Total Portfolio Return: 5.75%
-Portfolio Standard Deviation: 0.05
+Initial Portfolio Value: 9,999,709.00
+Final Portfolio Value: 10,550,290.38
+Total Portfolio Return: 5.51%
+Portfolio Standard Deviation: 0.09
