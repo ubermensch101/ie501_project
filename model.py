@@ -69,7 +69,6 @@ def backtest_portfolio(weights):
         "Shares": [shares[asset] for asset in assets]
     })
     share_data.to_csv("shares_allocation.csv", index=False)
-
     cumulative_returns.plot(title="Cumulative Returns (Backtesting Period)", figsize=(10, 6))
 
     # start_prices = backtesting_prices.iloc[0].values

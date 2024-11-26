@@ -52,25 +52,39 @@ def optimize_qp(mean_returns, cov_matrix):
 def optimize_de(mean_returns, cov_matrix, max_risk, max_weight):
     bounds = [(0, max_weight) for _ in range(len(mean_returns))]
     
+
     def objective(weights):
         return -np.dot(weights, mean_returns)
 
-    def constraint(weights):
+
+    def risk_constraint(weights):
         return max_risk - portfolio_risk(weights, cov_matrix)
 
-    nonlinear_constraint = NonlinearConstraint(
-        fun=constraint,  
-        lb=0,                 
-        ub=np.inf            
+
+    def weight_sum_constraint(weights):
+        return np.sum(weights) - 1
+
+    risk_nonlinear_constraint = NonlinearConstraint(
+        fun=risk_constraint,
+        lb=0,  
+        ub=np.inf
+    )
+
+
+    weight_sum_nonlinear_constraint = NonlinearConstraint(
+        fun=weight_sum_constraint,
+        lb=0,
+        ub=0
     )
 
     result = differential_evolution(
         objective,
         bounds=bounds,
-        constraints=(nonlinear_constraint,),
+        constraints=(risk_nonlinear_constraint, weight_sum_nonlinear_constraint),
         strategy='best1bin',
         maxiter=1000
     )
+    
     weights = result.x
     return weights, np.dot(weights, mean_returns), portfolio_risk(weights, cov_matrix)
 
