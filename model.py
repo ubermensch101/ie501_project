@@ -8,7 +8,6 @@ from helper import (
 )
 from data import max_risk, max_weight, assets, total_capital
 import os
-from analyze import *
 
 file_path = "asset_prices.csv"
 data = pd.read_csv(file_path)
@@ -82,7 +81,7 @@ def backtest_portfolio(weights):
     print(f"Total Portfolio Value at End: ₹{portfolio_value:,.2f}")
 
 if __name__ == "__main__":
-    method = "QP"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
+    method = "DE"  # Change to "SLSQP" or "QP" or "DE" for other optimizations
     weights, optimized_return, optimized_risk = run_optimization(method=method)
 
     print("Optimal Weights:", weights)
@@ -90,4 +89,3 @@ if __name__ == "__main__":
     print("Optimized Risk:", optimized_risk)
 
     backtest_portfolio(weights)
-    analyze_results()
