@@ -1,15 +1,15 @@
 # Define assets and sectors
 assets_sectors = {
-    'RELIANCE.NS': 'Energy',
-    'TCS.NS': 'IT',
-    'HDFCBANK.NS': 'Financials',
-    'INFY.NS': 'IT',
-    'ICICIBANK.NS': 'Financials',
     'BAJFINANCE.NS': 'Financials',
+    'HDFCBANK.NS': 'Financials',
     'HINDUNILVR.NS': 'Consumer Goods',
+    'ICICIBANK.NS': 'Financials',
+    'INFY.NS': 'IT',
     'ITC.NS': 'Consumer Goods',
+    'RELIANCE.NS': 'Energy',
+    'SBIN.NS': 'Financials',
     'TATAMOTORS.NS': 'Automobile',
-    'SBIN.NS': 'Financials'
+    'TCS.NS': 'IT'
 }
 
 assets = list(assets_sectors.keys())
